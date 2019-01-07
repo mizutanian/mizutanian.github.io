@@ -6,14 +6,15 @@ function submitKeyword(){
 };
 
 function readHtml(url) {
-  $.ajax({
-    type: 'GET',
-    url: url,
-    success: function(data) {
-      $('#content').append(data.responseText);
-    },
-    error: function(xhr, status, err) {
-      alert('HTML読み出しで問題がありました:' + url);
-    }
+  $.ajax({  
+      url: url,
+      type: 'GET',
+      success: function(data) {
+          content = $($(data.responseText).text());
+          $('body').append(content);
+      },
+      error: function(xhr, status, err) {
+        alert('HTML読み出しで問題がありました:' + url);
+      }
   });
 }
