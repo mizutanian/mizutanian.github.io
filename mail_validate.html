@@ -7,6 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesheet/main.css">
+    <link rel="stylesheet" href="stylesheet/mail_validate.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="javascript/jquery.xdomainajax.js"></script>
     <script type="text/javascript" src="javascript/main.js"></script>
@@ -16,33 +17,16 @@
 </head>
 
 <body>
-  <!------------------ begin:nav --------------------->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">いんでっくす</a>
-    <div class="collapse navbar-collapse" id="Navber">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="index.html">ホーム</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="mail_validate.html">メルマガバリデ〜タ〜</a>
-        </li>
-    </div>
-  </nav>
-  <!------------------ end:nav --------------------->
-
   <div class="content">
   <!------------------ begin:form --------------------->
-  <div class="wrap_form_keyword">
-    <form name="formKeyword">
-      <!-- キーワード入力エリア -->
-      <div class="form-group">
-        <label>キーワード</label>
-        <input type="text" name="keyword" class="form-control" placeholder="スペースで単語を区切る">
-      </div>
-      <!-- 送信ボタン -->
-      <button class="btn btn-primary" onclick="submitKeyword()">リストを作成する</button>
-    </form>
+  <div class="wrap_form_content">
+    <!-- キーワード入力エリア -->
+    <div class="form-group">
+      <label>メール本文</label>
+      <textarea name="mail_content" class="form-control" rows="20" cols="40"></textarea>
+    </div>
+    <!-- 送信ボタン -->
+    <button class="btn btn-primary" onclick="validateContent();">validate</button>
   </div>
     <!------------------ end:form --------------------->
   </div>
