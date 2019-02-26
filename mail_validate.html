@@ -20,15 +20,26 @@
   <div class="content">
   <!------------------ begin:form --------------------->
   <div class="wrap_form_content">
+    <div class="howtouse">
+      <span class="box-title">HowToUse</span>
+      <p>メール内のURLを検出して「?」と「&」が適切に扱われているかを検査します。</p>
+      <p>下のフォームにメール本文をコピペして、validateボタンを押してください。</p>
+      <p>結果が出力されますので、もし赤くなっているURLがあれば修正してください。</p>
+      <p>他の部分（httpがhhttpになってたりとか）は見てないので、あくまで補助的にお使いください。</p>
+    </div>
     <!-- キーワード入力エリア -->
     <div class="form-group">
-      <label>メール本文</label>
+      <h2>Content</h2>
       <textarea name="mail_content" class="form-control" rows="20" cols="40"></textarea>
     </div>
     <!-- 送信ボタン -->
-    <button class="btn btn-primary" onclick="validateContent();">validate</button>
+    <button class="btn btn-primary" onclick="validateContent()">validate</button>
   </div>
     <!------------------ end:form --------------------->
+  <div class="wrap_result_content">
+    <div id="result">
+    </div>
+  </div>
   </div>
 </body>
 
