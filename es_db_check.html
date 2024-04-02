@@ -7,28 +7,30 @@
     <link rel="stylesheet" href="stylesheet/es_db_check.css">
 </head>
 <body>
-    <div class="container">
-        <div class="howtouse">
-          <span class="box-title">HowToUse</span>
-          <p>kibana で取得したデータと Redash で取得したデータを突合させます。</p>
-          <p>データの不整合があった場合は画面下部に詳細を表示します。</p>
-          <br>
-          <p>「ES側データ」には、kibana の Console で取得したデータをコピペしてください。</p>
-          <p>「DB側データ」には、Redash のクエリで出力した CSV を指定してください。</p>
+    <div class="main-container">
+      <div class="container">
+          <div class="howtouse">
+            <span class="box-title">HowToUse</span>
+            <p>kibana で取得したデータと Redash で取得したデータを突合させます。</p>
+            <p>データの不整合があった場合は画面下部に詳細を表示します。</p>
+            <br>
+            <p>「ES側データ」には、kibana の Console で取得したデータをコピペしてください。</p>
+            <p>「DB側データ」には、Redash のクエリで出力した CSV を指定してください。</p>
 
-        </div>    
-        <h2>ESとDBのズレ解消マン</h2>
-        <div class="form-group">
-            <label for="esData">ES側データ（テキスト）</label>
-            <textarea id="esData" rows="10"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="dbFile">DB側データ</label>
-            <input type="file" id="dbFile" accept=".csv">
-        </div>
-        <div class="form-group">
-            <button onclick="processFiles()">ファイルを処理</button>
-        </div>
+          </div>    
+          <h2>ESとDBのズレ解消マン</h2>
+          <div class="form-group">
+              <label for="esData">ES側データ（テキスト）</label>
+              <textarea id="esData" rows="10"></textarea>
+          </div>
+          <div class="form-group">
+              <label for="dbFile">DB側データ</label>
+              <input type="file" id="dbFile" accept=".csv">
+          </div>
+          <div class="form-group">
+              <button onclick="processFiles()">ファイルを処理</button>
+          </div>
+      </div>
     </div>
 
     <div class="container" id="resultsContainer" style="display: none;">

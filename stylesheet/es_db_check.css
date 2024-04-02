@@ -34,14 +34,22 @@ body {
   padding: 0;
 }
 
-.container {
-  max-width: 900px;
+.main-container {
+  max-width: 1000px;
   margin: auto;
   margin-bottom: 20px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 20px;
 }
 
 .form-group {
@@ -89,5 +97,6 @@ th {
 
 /* 表が含まれるコンテナ用のスタイル */
 #resultsContainer {
+  max-width: 1000px;
   overflow-x: auto; /* 水平方向にスクロールバーを表示 */
 }

@@ -67,11 +67,27 @@ function displayMismatchedData(dataArray) {
         row.insertCell().textContent = item.entry_id;
         row.insertCell().textContent = item.updated_at;
         row.insertCell().textContent = item.updated_at_from_db;
-        // 修正コマンドの生成と追加
+        
+        // 修正コマンドの生成とコピーボタンを含むセルの作成
         const repairCommand = `Entry.find(${item.entry_id}).__elasticsearch__.update_document`;
-        row.insertCell().textContent = repairCommand;
+        const cell = row.insertCell();
+        cell.textContent = repairCommand + " "; // 修正コマンドのテキスト
+        
+        // コピーボタンの作成
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'コピー';
+        copyButton.style.marginLeft = '10px'; // ボタンとコマンドのテキストの間にマージンを追加
+        copyButton.onclick = function() {
+            navigator.clipboard.writeText(repairCommand).then(() => {
+                alert('コピーしました！');
+            }).catch(err => {
+                console.error('コピーに失敗しました: ', err);
+            });
+        };
+        cell.appendChild(copyButton); // ボタンをセルに追加
     });
 
     resultsContainer.style.display = 'block'; // 結果コンテナを表示
 }
+
 
