@@ -1,55 +1,26 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input[type="file"] {
-            display: block;
-            width: 100%;
-        }
-        .form-group button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .form-group button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>ESとDBのズレ解消マン</title>
+    <link rel="stylesheet" href="stylesheet/es_db_check.css">
 </head>
 <body>
     <div class="container">
-        <h2>ファイル処理ツール</h2>
+        <div class="howtouse">
+          <span class="box-title">HowToUse</span>
+          <p>kibana で取得したデータと Redash で取得したデータを突合させます。</p>
+          <p>データの不整合があった場合は画面下部に詳細を表示します。</p>
+          <br>
+          <p>「ES側データ」には、kibana の Console で取得したデータをコピペしてください。</p>
+          <p>「DB側データ」には、Redash のクエリで出力した CSV を指定してください。</p>
+
+        </div>    
+        <h2>ESとDBのズレ解消マン</h2>
         <div class="form-group">
-            <label for="esFile">ES側データ</label>
-            <input type="file" id="esFile" accept=".txt">
+            <label for="esData">ES側データ（テキスト）</label>
+            <textarea id="esData" rows="10"></textarea>
         </div>
         <div class="form-group">
             <label for="dbFile">DB側データ</label>
@@ -60,6 +31,23 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="javascript/es_db_check.js"></script>
+    <div class="container" id="resultsContainer" style="display: none;">
+        <h3>不整合データ</h3>
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>entry_id</th>
+                    <th>updated_at_from_es</th>
+                    <th>updated_at_from_db</th>
+                    <th>修正コマンド</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 不整合データがここに挿入されます -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="javascript/es_db_check.js"></script>
 </body>
 </html>

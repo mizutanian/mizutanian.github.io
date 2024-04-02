@@ -1,45 +1,31 @@
 function processFiles() {
-    const esFileInput = document.getElementById('esFile');
+    const esDataInput = document.getElementById('esData').value;
+    if (!esDataInput.trim()) {
+        alert('ES側データを入力してください。');
+        return;
+    }
     const dbFileInput = document.getElementById('dbFile');
-
-    if (esFileInput.files.length === 0 || dbFileInput.files.length === 0) {
-        alert('両方のファイルを選択してください。');
+    if (dbFileInput.files.length === 0) {
+        alert('DB側のファイルを選択してください。');
         return;
     }
 
-    const esFile = esFileInput.files[0];
-    const dbFile = dbFileInput.files[0];
+    const esDataArray = JSON.parse(esDataInput).hits.hits.map(hit => ({
+        ...hit._source,
+        entry_id: hit._source.entry_id.toString(),
+        updated_at: hit._source.updated_at.toString()
+    }));
 
-    readESData(esFile)
-        .then(esDataArray => {
-            readDBData(dbFile)
-                .then(dbDataArray => {
-                    const mergedData = mergeData(esDataArray, dbDataArray);
-                    const filteredData = filterData(mergedData);
-                    if (filteredData.length > 0) {
-                        exportToCSV(filteredData);
-                        alert("データの不整合が見つかりました。ダウンロードされたCSVファイルを確認してください。");
-                    } else {
-                      alert("データの不整合は見つかりませんでした。");
-                    }
-                });
+    readDBData(dbFileInput.files[0])
+        .then(dbDataArray => {
+            const mergedData = mergeData(esDataArray, dbDataArray);
+            const filteredData = filterData(mergedData);
+            if (filteredData.length > 0) {
+                displayMismatchedData(filteredData);
+            } else {
+                alert("データの不整合は見つかりませんでした。");
+            }
         });
-}
-
-function readESData(file) {
-    return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const esData = JSON.parse(e.target.result);
-            const esDataArray = esData.hits.hits.map(hit => ({
-                ...hit._source,
-                entry_id: hit._source.entry_id.toString(),
-                updated_at: hit._source.updated_at.toString()
-            }));
-            resolve(esDataArray);
-        };
-        reader.readAsText(file);
-    });
 }
 
 function readDBData(file) {
@@ -71,17 +57,21 @@ function filterData(mergedData) {
     return mergedData.filter(item => item.updated_at !== item.updated_at_from_db);
 }
 
-function exportToCSV(dataArray) {
-    const csvHeader = "entry_id,updated_at_from_es,updated_at_from_db\n";
-    const csvBody = dataArray.map(item => `${item.entry_id},${item.updated_at},${item.updated_at_from_db}`).join("\n");
-    const csvContent = csvHeader + csvBody;
+function displayMismatchedData(dataArray) {
+    const resultsContainer = document.getElementById('resultsContainer');
+    const resultsTable = document.getElementById('resultsTable').getElementsByTagName('tbody')[0];
+    resultsTable.innerHTML = ''; // 既存の結果をクリア
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "mismatched_updates.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    dataArray.forEach(item => {
+        const row = resultsTable.insertRow();
+        row.insertCell().textContent = item.entry_id;
+        row.insertCell().textContent = item.updated_at;
+        row.insertCell().textContent = item.updated_at_from_db;
+        // 修正コマンドの生成と追加
+        const repairCommand = `Entry.find(${item.entry_id}).__elasticsearch__.update_document`;
+        row.insertCell().textContent = repairCommand;
+    });
+
+    resultsContainer.style.display = 'block'; // 結果コンテナを表示
 }
+
